@@ -90,7 +90,7 @@ export const TESTIMONIALS_QUERY = defineQuery(`
   *[_type == "testimonial"] {
     name_of_client,
     testimonial_text,
-    image_to_display[] {
+    image_to_display {
       asset -> {
         url
       },
