@@ -27,11 +27,10 @@ export const testimonialType = defineType({
     }),
     defineField({
       name: "image_to_display",
-      type: "array",
-      of: [{ type: "image" }],
+      type: "image",
       description:
         "This image will cover the whole screen. It should be high resolution and landscape orientation.",
-      validation: (Rule) => Rule.min(1).required(),
+      validation: (Rule) => Rule.required(),
     }),
   ],
 });

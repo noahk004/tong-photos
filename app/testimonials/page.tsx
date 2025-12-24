@@ -32,7 +32,7 @@ export default async function TestimonialsPage() {
                 key={index}
                 name_of_client={testimonial.name_of_client}
                 testimonial_text={testimonial.testimonial_text}
-                image_to_display={testimonial.image_to_display[0].asset?.url}
+                image_to_display={testimonial.image_to_display[0].asset.url}
                 text_position={testimonial.text_position}
               />
             )
