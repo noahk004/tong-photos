@@ -12,6 +12,7 @@
     "@portabletext/react": "^5.0.0",
     "@sanity/image-url": "^1.2.0",
     "@sanity/vision": "^4.15.0",
+    "@vercel/analytics": "^1.6.1",
     "lucide-react": "^0.552.0",
     "motion": "^12.23.24",
     "next": "16.0.1",

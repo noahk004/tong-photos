@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { Analytics } from '@vercel/analytics/next';
 import { Fustat } from "next/font/google";
 import { METADATA_QUERY } from "@/sanity/lib/queries";
 import "./globals.css";
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${fustat.className} antialiased`}>
         {children}
+        <Analytics />
         <SanityLive />
       </body>
     </html>
