@@ -72,8 +72,8 @@ export default function TestimonialsPreview({
                   src={images[0]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
               <motion.div
@@ -87,8 +87,8 @@ export default function TestimonialsPreview({
                   src={images[1]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
 
@@ -104,8 +104,8 @@ export default function TestimonialsPreview({
                   src={images[2]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
               <motion.div
@@ -119,8 +119,8 @@ export default function TestimonialsPreview({
                   src={images[3]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
 
@@ -136,8 +136,8 @@ export default function TestimonialsPreview({
                   src={images[4]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
               <motion.div
@@ -151,8 +151,8 @@ export default function TestimonialsPreview({
                   src={images[5]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
 
@@ -168,8 +168,8 @@ export default function TestimonialsPreview({
                   src={images[6]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
               <motion.div
@@ -183,8 +183,8 @@ export default function TestimonialsPreview({
                   src={images[7]}
                   alt={header}
                   className="w-full h-full object-cover"
-                  width={100}
-                  height={100}
+                  width={600}
+                  height={600}
                 />
               </motion.div>
             </div>

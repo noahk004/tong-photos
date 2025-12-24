@@ -35,8 +35,8 @@ export default function ServicesPreview({
               <Image
                 src={imgLandscape}
                 alt={header}
-                width={80}
-                height={80}
+                width={600}
+                height={600}
                 className="w-40 md:w-64 border-4 border-white shadow-xl"
               />
             </motion.div>
@@ -49,8 +49,8 @@ export default function ServicesPreview({
               <Image
                 src={imgPortrait}
                 alt={header}
-                width={80}
-                height={80}
+                width={600}
+                height={600}
                 className="w-28 md:w-44 mb-4 md:mb-8 border-4 border-white shadow-xl"
               />
             </motion.div>
