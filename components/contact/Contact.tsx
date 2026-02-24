@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Footer from "../Footer";
-import { sendEmail } from "@/app/actions/sendEmail";
+import { sendEmail } from "@/app/_actions/sendEmail";
 
 export default function Contact({
   form_header,

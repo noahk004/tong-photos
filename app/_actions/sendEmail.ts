@@ -1,5 +1,7 @@
 "use server";
 
+import EmailTemplate from "@/components/email-templates/new-message-alert";
+
 export async function sendEmail(
   to: string,
   from: string,
@@ -9,18 +11,6 @@ export async function sendEmail(
   lastName: string
 ) {
   try {
-    // Format the email body
-    const emailBody = `
-New Contact Form Submission
-
-Name: ${firstName} ${lastName}
-Email: ${from}
-Subject: ${subject}
-
-Message:
-${message}
-    `.trim();
-
     // Try to use Resend if available
     // To enable email sending, install resend: npm install resend
     // Then set RESEND_API_KEY and FROM_EMAIL in your .env file
@@ -34,8 +24,15 @@ ${message}
           const result = await resend.emails.send({
             from: process.env.FROM_EMAIL || "onboarding@resend.dev",
             to: to,
-            subject: `Contact Form: ${subject}`,
-            text: emailBody,
+            subject: `[CONTACT FORM SUBMISSION] ${subject}`,
+            react: EmailTemplate({
+              firstName: firstName,
+              lastName: lastName,
+              subject: subject,
+              from: from,
+              message: message,
+              timeSent: new Date(),
+            }),
             replyTo: from,
           });
 
@@ -47,7 +44,6 @@ ${message}
         }
       } catch (resendError) {
         console.error("Resend error:", resendError);
-        // Fall through to alternative method
       }
     }
 
@@ -58,7 +54,6 @@ ${message}
       to,
       from,
       subject,
-      body: emailBody,
     });
 
     // For development/testing, return success
