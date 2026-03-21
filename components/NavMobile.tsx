@@ -34,20 +34,20 @@ export default function NavMobile({ logo }: { logo: string }) {
           <>
             {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
+              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               onClick={() => setIsOpen(false)}
             />
-
             {/* Sidebar */}
             <motion.aside
               className="fixed top-0 right-0 h-full w-64 bg-background-2 text-foreground z-50 shadow-xl flex flex-col px-8 py-10"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
             >
               <Image src={logo} alt="Logo" width={100} height={100} className="w-20 mb-12" />
 
@@ -60,8 +60,8 @@ export default function NavMobile({ logo }: { logo: string }) {
                       href={href}
                       onClick={() => setIsOpen(false)}
                       className={`text-sm tracking-widest uppercase transition-colors duration-200 ${isActive
-                          ? "text-[#cd7400]"
-                          : "text-foreground hover:text-[#cd7400]"
+                        ? "text-[#cd7400]"
+                        : "text-foreground hover:text-[#cd7400]"
                         }`}
                     >
                       {label}

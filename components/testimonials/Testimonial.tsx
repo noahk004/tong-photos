@@ -1,7 +1,7 @@
+// Testimonial.tsx
 "use client";
 
 import Image from "next/image";
-
 import { motion } from "motion/react";
 
 export default function Testimonial({
@@ -15,47 +15,54 @@ export default function Testimonial({
   image_to_display: string;
   text_position: string;
 }) {
+  const isLeft = text_position === "left";
+
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">
-      <div className="relative w-full h-full">
-        <div className="absolute inset-0">
-          <Image
-            src={image_to_display}
-            alt={name_of_client}
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          {/* Overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/60" />
-        </div>
-      </div>
+      {/* Background image */}
+      <Image
+        src={image_to_display}
+        alt={name_of_client}
+        fill
+        className="object-cover"
+        sizes="100vw"
+      />
 
-      {/* Title and Description Overlay */}
+      {/* Gradient overlay — stronger on the text side */}
       <div
-        className={`absolute inset-0 z-10 flex items-center container mx-auto px-4 mt-20 w-full ${text_position === "left" ? "justify-start" : "justify-end"}`}
+        className={`absolute inset-0 ${isLeft
+            ? "bg-gradient-to-r from-black/80 via-black/40 to-black/10"
+            : "bg-gradient-to-l from-black/80 via-black/40 to-black/10"
+          }`}
+      />
+
+      {/* Content */}
+      <div
+        className={`absolute inset-0 z-10 flex items-end container mx-auto px-8 pb-20 ${isLeft ? "justify-start" : "justify-end"
+          }`}
       >
-        <div className="max-w-xl">
-          <div
-            className={`px-4 max-w-4xl ${text_position === "left" ? "text-left" : "text-right"}`}
+        <div className={`max-w-lg ${isLeft ? "text-left" : "text-right"}`}>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="text-sm md:text-base text-white/80 font-light italic leading-relaxed mb-6"
           >
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className="text-lg md:text-xl text-white mb-2 drop-shadow-lg"
-            >
-              {name_of_client.toUpperCase()}
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-sm md:text-md text-white/90 drop-shadow-md mb-12 font-light italic"
-            >
-              &quot;{testimonial_text}&quot;
-            </motion.p>
-          </div>
+            &quot;{testimonial_text}&quot;
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+            className={`flex items-center gap-3 ${isLeft ? "justify-start" : "justify-end"}`}
+          >
+            <div className="w-6 h-px bg-[#cd7400]" />
+            <span className="text-xs tracking-[0.25em] uppercase text-[#ffedd2] font-light">
+              {name_of_client}
+            </span>
+          </motion.div>
         </div>
       </div>
     </div>

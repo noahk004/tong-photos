@@ -3,6 +3,10 @@ import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { Analytics } from '@vercel/analytics/next';
 import { Fustat } from "next/font/google";
 import { METADATA_QUERY } from "@/sanity/lib/queries";
+
+import NavWrapper from "@/components/NavWrapper";
+import Footer from "@/components/Footer";
+
 import "./globals.css";
 
 const fustat = Fustat({
@@ -17,15 +21,26 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const metadata = await sanityFetch({ query: METADATA_QUERY });
+
   return (
     <html lang="en">
       <body className={`${fustat.className} antialiased`}>
-        {children}
+        <div>
+          <NavWrapper logo={metadata.data.site_logo.asset.url} />
+          {children}
+
+          <Footer
+            site_title={metadata.data.site_title}
+            email_address={metadata.data.email_address}
+            instagram_url={metadata.data.instagram_url}
+          />
+        </div>
         <Analytics />
         <SanityLive />
       </body>
