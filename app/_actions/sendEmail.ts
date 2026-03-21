@@ -45,7 +45,7 @@ export async function sendEmail(
   }
 
   try {
-    const fromEmail = `noreply@${process.env.SITE_DOMAIN}`
+    const fromEmail = `info@${process.env.SITE_DOMAIN}`
     const result = await resend.emails.send({
       from: fromEmail,
       to: to,
