@@ -10,65 +10,63 @@ export async function sendEmail(
   firstName: string,
   lastName: string
 ) {
-  try {
-    // Try to use Resend if available
-    // To enable email sending, install resend: npm install resend
-    // Then set RESEND_API_KEY and FROM_EMAIL in your .env file
-    if (process.env.RESEND_API_KEY) {
-      try {
-        const resendModule = await import("resend").catch(() => null);
-        if (resendModule && resendModule.Resend) {
-          const { Resend } = resendModule;
-          const resend = new Resend(process.env.RESEND_API_KEY);
-
-          const result = await resend.emails.send({
-            from: process.env.FROM_EMAIL || "onboarding@resend.dev",
-            to: to,
-            subject: `[CONTACT FORM SUBMISSION] ${subject}`,
-            react: EmailTemplate({
-              firstName: firstName,
-              lastName: lastName,
-              subject: subject,
-              from: from,
-              message: message,
-              timeSent: new Date(),
-            }),
-            replyTo: from,
-          });
-
-          if ("error" in result && result.error) {
-            throw result.error;
-          }
-
-          return { success: true, message: "Email sent successfully" };
-        }
-      } catch (resendError) {
-        console.error("Resend error:", resendError);
-      }
-    }
-
-    // Fallback: Use mailto link (client-side will handle this)
-    // This is a temporary solution until email service is configured
-    // In production, you should set up Resend, SendGrid, or another email service
-    console.log("Email service not configured. Email details:", {
-      to,
-      from,
-      subject,
-    });
-
-    // For development/testing, return success
-    // In production, you should configure an email service
-    if (process.env.NODE_ENV === "development") {
-      return {
-        success: true,
-        message: "Email sent successfully (development mode)",
-      };
-    }
-
+  if (!process.env.RESEND_API_KEY) {
+    console.error("RESEND_API_KEY not configured in environment variables.");
     return {
       success: false,
-      message: "Email service not configured. Please set up RESEND_API_KEY.",
+      message: "Email service not configured properly.",
     };
+  }
+  if (!process.env.SITE_DOMAIN) {
+    console.error("SITE_DOMAIN not configured in environment variables.");
+    return {
+      success: false,
+      message: "Email service not configured properly.",
+    };
+  }
+  const resendModule = await import("resend").catch(() => null);
+  if (!resendModule || !resendModule.Resend) {
+    console.error("Something went wrong while importing Resend module.");
+    return {
+      success: false,
+      message: "Email service not configured properly.",
+    };
+  }
+  const { Resend } = resendModule;
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  // For development/testing, return success
+  // In production, you should configure an email service
+  if (process.env.NODE_ENV === "development") {
+    return {
+      success: true,
+      message: "Email sent successfully (development mode)",
+    };
+  }
+
+  try {
+    const fromEmail = `noreply@${process.env.SITE_DOMAIN}`
+    const result = await resend.emails.send({
+      from: fromEmail,
+      to: to,
+      subject: `[CONTACT FORM SUBMISSION] ${subject}`,
+      react: EmailTemplate({
+        firstName: firstName,
+        lastName: lastName,
+        subject: subject,
+        from: from,
+        message: message,
+        timeSent: new Date(),
+      }),
+      replyTo: from,
+    });
+
+    if (result.error) {
+      throw result.error;
+    }
+
+    return { success: true, message: "Email sent successfully" };
+
   } catch (err) {
     console.error("Error sending email:", err);
     return {
