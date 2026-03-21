@@ -1,8 +1,8 @@
+// Services.tsx
 "use client";
 
 import { motion } from "motion/react";
 import ServicePane from "./ServicePane";
-import Footer from "../Footer";
 
 type Service = {
   _id: string;
@@ -11,45 +11,49 @@ type Service = {
   service_image: { asset: { url: string } };
 };
 
-export default function Services({
-  services,
-  site_title,
-  email_address,
-  instagram_url,
-}: {
-  services: Service[];
-  site_title: string;
-  email_address: string;
-  instagram_url: string;
-}) {
-  const isSingleService = services.length === 1;
-
+export default function Services({ services }: { services: Service[] }) {
   return (
-    <div className="py-4 h-full overflow-y-auto pt-32 pb-12 md:pt-44">
-      <div className="container mx-auto px-4 flex flex-col items-center">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-3xl md:text-4xl mb-16"
-        >
-          SERVICES
-        </motion.h1>
+    <main className="bg-white">
+      {/* Header */}
+      <div className="relative h-[40vh] min-h-[260px] bg-[#353535] flex items-end">
+        <div className="container mx-auto px-8 pb-12">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-xs tracking-[0.3em] uppercase text-[#ffedd2] mb-4 font-light"
+          >
+            What I Offer
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+            className="text-4xl md:text-6xl font-light uppercase tracking-wide text-white"
+          >
+            Services
+          </motion.h1>
+        </div>
+      </div>
 
+      {/* Amber rule */}
+      <div className="h-[3px] bg-[#cd7400]" />
+
+      {/* Grid */}
+      <div className="container mx-auto px-8 py-20 md:py-28">
         <div
-          className={`grid grid-cols-1 ${isSingleService ? "justify-items-center" : "md:grid-cols-2"} gap-8 mb-40 md:mb-64`}
+          className={`grid grid-cols-1 gap-6 ${services.length === 1
+              ? "max-w-md mx-auto"
+              : "md:grid-cols-2"
+            }`}
         >
-          {services.map((service: Service, index: number) => (
+          {services.map((service, index) => (
             <motion.div
               key={service.slug.current}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: "easeOut",
-              }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
             >
               <ServicePane
                 serviceImage={service.service_image.asset.url}
@@ -59,20 +63,7 @@ export default function Services({
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-          className="absolute bottom-20 md:bottom-24 left-0 right-0 container mx-auto"
-        >
-          <Footer
-            site_title={site_title}
-            email_address={email_address}
-            instagram_url={instagram_url}
-          />
-        </motion.div>
       </div>
-    </div>
+    </main>
   );
 }

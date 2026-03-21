@@ -1,3 +1,4 @@
+// ServicePane.tsx
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,18 +14,22 @@ export default function ServicePane({
   return (
     <Link
       href={`/services/${serviceSlug}`}
-      className="group relative overflow-hidden aspect-square block border-6 border-transparent hover:border-white transition-all duration-300 shadow-lg hover:shadow-xl"
+      className="group relative overflow-hidden aspect-square block shadow-md hover:shadow-xl transition-shadow duration-300"
     >
       <Image
         src={serviceImage}
         alt={serviceName}
-        width={800}
-        height={800}
-        quality={100}
-        className="transition-all duration-300 brightness-60 md:brightness-100 md:group-hover:brightness-50 w-80 h-80 object-cover"
+        fill
+        quality={90}
+        className="object-cover transition-transform duration-500 group-hover:scale-105 brightness-75 md:brightness-100 md:group-hover:brightness-50"
+        sizes="(max-width: 768px) 100vw, 50vw"
       />
-      <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-        <h1 className="text-white text-xl underline underline-offset-4">{serviceName.toUpperCase()}</h1>
+      {/* Overlay */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 bg-black/30">
+        <span className="text-white text-sm tracking-[0.25em] uppercase font-light mb-3">
+          {serviceName}
+        </span>
+        <div className="w-6 h-px bg-[#cd7400]" />
       </div>
     </Link>
   );

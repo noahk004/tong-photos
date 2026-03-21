@@ -1,13 +1,8 @@
 "use client";
 
-import { useRef, useEffect } from "react";
 import { motion } from "motion/react";
 import { PortableText } from "@portabletext/react";
 import { PortableTextBlock } from "@portabletext/types";
-
-interface WindowWithScrollContainer extends Window {
-  __currentScrollContainer?: HTMLElement;
-}
 
 export default function About({
   header,
@@ -16,52 +11,74 @@ export default function About({
   header: string;
   body_text: PortableTextBlock[];
 }) {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    const windowWithScroll = window as WindowWithScrollContainer;
-
-    // Store ref - this component is only mounted when it's the current section
-    if (scrollContainer) {
-      windowWithScroll.__currentScrollContainer = scrollContainer;
-    }
-    return () => {
-      if (windowWithScroll.__currentScrollContainer === scrollContainer) {
-        delete windowWithScroll.__currentScrollContainer;
-      }
-    };
-  }, []);
-
   return (
-    <div className="py-4 h-full overflow-y-auto" ref={scrollContainerRef}>
-      <div className="container mx-auto px-4 min-h-screen flex flex-col items-start">
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-          className="text-2xl md:text-4xl mb-8 mt-28 md:mb-32 md:mt-64"
-        >
-          {header.toUpperCase()}
-        </motion.h1>
+    <main className="bg-white">
+      {/* Header */}
+      <div className="relative h-[40vh] min-h-[260px] bg-[#353535] flex items-end">
+        <div className="container mx-auto px-8 pb-12">
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-xs tracking-[0.3em] uppercase text-[#ffedd2] mb-4 font-light"
+          >
+            The Photographer
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+            className="text-4xl md:text-6xl font-light uppercase tracking-wide text-white"
+          >
+            {header}
+          </motion.h1>
+        </div>
+      </div>
+
+      {/* Amber rule */}
+      <div className="h-[3px] bg-[#cd7400]" />
+
+      {/* Body */}
+      <div className="container mx-auto px-8 py-20 md:py-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-          className="text-sm md:text-base text-gray-700 leading-relaxed pb-32"
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="max-w-2xl"
         >
           <PortableText
             value={body_text}
             components={{
               block: {
-                normal: ({ children }) => <p className="mb-4">{children}</p>,
+                normal: ({ children }) => (
+                  <p className="text-base text-black/70 font-light leading-[1.9] mb-6">
+                    {children}
+                  </p>
+                ),
+                h2: ({ children }) => (
+                  <h2 className="text-2xl md:text-3xl font-light uppercase tracking-wide text-[#353535] mt-12 mb-4">
+                    {children}
+                  </h2>
+                ),
+                h3: ({ children }) => (
+                  <h3 className="text-lg font-light uppercase tracking-wide text-[#353535] mt-8 mb-3">
+                    {children}
+                  </h3>
+                ),
+              },
+              marks: {
+                strong: ({ children }) => (
+                  <strong className="font-semibold text-[#353535]">{children}</strong>
+                ),
+                em: ({ children }) => (
+                  <em className="italic text-black/50">{children}</em>
+                ),
               },
             }}
           />
         </motion.div>
       </div>
-    </div>
+    </main>
   );
 }
