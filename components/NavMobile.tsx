@@ -4,58 +4,75 @@ import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
+import { usePathname } from "next/navigation";
 
-export default function NavMobile({ logo, inverted_colors }: { logo: string, inverted_colors?: boolean }) {
+export default function NavMobile({ logo }: { logo: string }) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
-  const buttonColor = inverted_colors ? "text-white/90" : "text-black";
+  const links = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/services", label: "Services" },
+    { href: "/testimonials", label: "Testimonials" },
+    { href: "/contact", label: "Book Now" },
+  ];
 
   return (
     <div className="md:hidden">
-      {/* Toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 text-foreground transition"
+        className="fixed top-4 left-4 z-50 p-2 transition"
+        style={{ mixBlendMode: "difference" }}
       >
-        {isOpen ? <X className={buttonColor}/> : <Menu className={buttonColor}/>}
+        {isOpen ? <X className="text-white" /> : <Menu className="text-white" />}
       </button>
 
-      {/* Sidebar backdrop (optional) */}
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-40 "
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+            />
 
-      {/* Sidebar panel */}
-      <motion.aside
-        className="fixed top-0 right-0 h-full w-64 bg-background-2 text-foreground z-50 shadow-lg p-6 flex flex-col space-y-4"
-        initial={{ x: "100%" }}
-        animate={{ x: isOpen ? 0 : "100%" }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      >
-        <Image src={logo} alt="Logo" width={100} height={100} className="w-24 mb-8" />
-        <Link href="/" className="hover:text-gray-300">
-          Home
-        </Link>
-        <Link href="/about" className="hover:text-gray-300">
-          About
-        </Link>
-        <Link href="/services" className="hover:text-gray-300">
-          Services
-        </Link>
-        <Link href="/testimonials" className="hover:text-gray-300">
-          Testimonials
-        </Link>
-        <Link href="/contact" className="hover:text-gray-300">
-          Book Now
-        </Link>
-      </motion.aside>
+            {/* Sidebar */}
+            <motion.aside
+              className="fixed top-0 right-0 h-full w-64 bg-background-2 text-foreground z-50 shadow-xl flex flex-col px-8 py-10"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <Image src={logo} alt="Logo" width={100} height={100} className="w-20 mb-12" />
+
+              <nav className="flex flex-col gap-6">
+                {links.map(({ href, label }) => {
+                  const isActive = pathname === href;
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-sm tracking-widest uppercase transition-colors duration-200 ${isActive
+                          ? "text-[#cd7400]"
+                          : "text-foreground hover:text-[#cd7400]"
+                        }`}
+                    >
+                      {label}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
